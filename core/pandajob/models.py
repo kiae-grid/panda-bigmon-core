@@ -12,6 +12,10 @@ from .columns_config import COLUMNS, ORDER_COLUMNS, COL_TITLES, FILTERS
 
 
 from django.db import models
+
+from cqlengine import columns
+from cqlengine.models import Model
+
 models.options.DEFAULT_NAMES += ('allColumns', 'orderColumns', \
                                  'primaryColumns', 'secondaryColumns', \
                                  'columnTitles', 'filterFields',)
@@ -204,4 +208,99 @@ class Jobswaiting4(PandaJob):
 #        managed = False
         db_table = u'jobswaiting4'
 
+class PandaJobArchived(Model):
+    pandaid = columns.BigInt(primary_key=True) # Field name made lowercase.
+    modificationtime = columns.DateTime() # Field name made lowercase.
+    jobdefinitionid = columns.BigInt() # Field name made lowercase.
+    schedulerid = columns.Text(max_length=384) # Field name made lowercase.
+    pilotid = columns.Text(max_length=600) # Field name made lowercase.
+    creationtime = columns.DateTime() # Field name made lowercase.
+    creationhost = columns.Text(max_length=384) # Field name made lowercase.
+    modificationhost = columns.Text(max_length=384) # Field name made lowercase.
+    atlasrelease = columns.Text(max_length=192) # Field name made lowercase.
+    transformation = columns.Text(max_length=750) # Field name made lowercase.
+    homepackage = columns.Text(max_length=240) # Field name made lowercase.
+    prodserieslabel = columns.Text(max_length=60) # Field name made lowercase.
+    prodsourcelabel = columns.Text(max_length=60) # Field name made lowercase.
+    produserid = columns.Text(max_length=750) # Field name made lowercase.
+    assignedpriority = columns.Integer() # Field name made lowercase.
+    currentpriority = columns.Integer() # Field name made lowercase.
+    attemptnr = columns.Integer() # Field name made lowercase.
+    maxattempt = columns.Integer() # Field name made lowercase.
+    jobstatus = columns.Text(max_length=45) # Field name made lowercase.
+    jobname = columns.Text(max_length=768) # Field name made lowercase.
+    maxcpucount = columns.Integer() # Field name made lowercase.
+    maxcpuunit = columns.Text(max_length=96) # Field name made lowercase.
+    maxdiskcount = columns.Integer() # Field name made lowercase.
+    maxdiskunit = columns.Text(max_length=12) # Field name made lowercase.
+    ipconnectivity = columns.Text(max_length=15) # Field name made lowercase.
+    minramcount = columns.Integer() # Field name made lowercase.
+    minramunit = columns.Text(max_length=6) # Field name made lowercase.
+    starttime = columns.DateTime() # Field name made lowercase.
+    endtime = columns.DateTime() # Field name made lowercase.
+    cpuconsumptiontime = columns.BigInt() # Field name made lowercase.
+    cpuconsumptionunit = columns.Text(max_length=384) # Field name made lowercase.
+    commandtopilot = columns.Text(max_length=750) # Field name made lowercase.
+    transexitcode = columns.Text(max_length=384) # Field name made lowercase.
+    piloterrorcode = columns.Integer() # Field name made lowercase.
+    piloterrordiag = columns.Text(max_length=1500) # Field name made lowercase.
+    exeerrorcode = columns.Integer() # Field name made lowercase.
+    exeerrordiag = columns.Text(max_length=1500) # Field name made lowercase.
+    superrorcode = columns.Integer() # Field name made lowercase.
+    superrordiag = columns.Text(max_length=750) # Field name made lowercase.
+    ddmerrorcode = columns.Integer() # Field name made lowercase.
+    ddmerrordiag = columns.Text(max_length=1500) # Field name made lowercase.
+    brokerageerrorcode = columns.Integer() # Field name made lowercase.
+    brokerageerrordiag = columns.Text(max_length=750) # Field name made lowercase.
+    jobdispatchererrorcode = columns.Integer() # Field name made lowercase.
+    jobdispatchererrordiag = columns.Text(max_length=750) # Field name made lowercase.
+    taskbuffererrorcode = columns.Integer() # Field name made lowercase.
+    taskbuffererrordiag = columns.Text(max_length=900) # Field name made lowercase.
+    computingsite = columns.Text(max_length=384) # Field name made lowercase.
+    computingelement = columns.Text(max_length=384) # Field name made lowercase.
+    jobparameters = columns.Text() # Field name made lowercase.
+    metadata = columns.Text() # Field name made lowercase.
+    proddblock = columns.Text(max_length=765) # Field name made lowercase.
+    dispatchdblock = columns.Text(max_length=765) # Field name made lowercase.
+    destinationdblock = columns.Text(max_length=765) # Field name made lowercase.
+    destinationse = columns.Text(max_length=750) # Field name made lowercase.
+    nevents = columns.Integer() # Field name made lowercase.
+    grid = columns.Text(max_length=150) # Field name made lowercase.
+    cloud = columns.Text(max_length=150) # Field name made lowercase.
+    cpuconversion = columns.Decimal() # Field name made lowercase.
+    sourcesite = columns.Text(max_length=108) # Field name made lowercase.
+    destinationsite = columns.Text(max_length=108) # Field name made lowercase.
+    transfertype = columns.Text(max_length=30) # Field name made lowercase.
+    taskid = columns.Integer() # Field name made lowercase.
+    cmtconfig = columns.Text(max_length=750) # Field name made lowercase.
+    statechangetime = columns.DateTime() # Field name made lowercase.
+    proddbupdatetime = columns.DateTime() # Field name made lowercase.
+    lockedby = columns.Text(max_length=384) # Field name made lowercase.
+    relocationflag = columns.Integer() # Field name made lowercase.
+    jobexecutionid = columns.BigInt() # Field name made lowercase.
+    vo = columns.Text(max_length=48) # Field name made lowercase.
+    pilottiming = columns.Text(max_length=300) # Field name made lowercase.
+    workinggroup = columns.Text(max_length=60) # Field name made lowercase.
+    processingtype = columns.Text(max_length=192) # Field name made lowercase.
+    produsername = columns.Text(max_length=180) # Field name made lowercase.
+    produsername_upper = columns.Text()
+    ninputfiles = columns.Integer() # Field name made lowercase.
+    countrygroup = columns.Text(max_length=60) # Field name made lowercase.
+    batchid = columns.Text(max_length=240) # Field name made lowercase.
+    parentid = columns.BigInt() # Field name made lowercase.
+    specialhandling = columns.Text(max_length=240) # Field name made lowercase.
+    jobsetid = columns.BigInt() # Field name made lowercase.
+    corecount = columns.Integer() # Field name made lowercase.
+    ninputdatafiles = columns.Integer() # Field name made lowercase.
+    jobparameteres = columns.Blob()
+    metadata = columns.Blob()
+    ninputdatafiles = columns.Integer()
+    inputfiletype = columns.Text(max_length=96) # Field name made lowercase.
+    inputfileproject = columns.Text(max_length=192) # Field name made lowercase.
+    inputfilebytes = columns.BigInt() # Field name made lowercase.
+    noutputdatafiles = columns.Integer() # Field name made lowercase.
+    outputfilebytes = columns.BigInt() # Field name made lowercase.
+    jobmetrics = columns.Text(max_length=1500) # Field name made lowercase.
+    workqueue_id = columns.Integer() # Field name made lowercase.
+    jeditaskid = columns.BigInt() # Field name made lowercase.
 
