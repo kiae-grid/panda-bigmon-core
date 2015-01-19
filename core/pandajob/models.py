@@ -204,4 +204,3 @@ class Jobswaiting4(PandaJob):
     class Meta:
 #        managed = False
         db_table = u'jobswaiting4'
-
