@@ -30,7 +30,7 @@ from django_datatables_view.base_datatable_view import BaseDatatableView
 #from ..settings import CUSTOM_DB_FIELDS, FILTER_UI_ENV
 from ..common.settings import STATIC_URL, FILTER_UI_ENV, defaultDatetimeFormat  ### FIXME: use django.conf's settings?
 from .models import PandaJob, Jobsactive4, Jobsdefined4, Jobswaiting4, \
-    Jobsarchived4, Jobsarchived
+    Jobsarchived4, Jobsarchived, jobs
 from ..common.models import Filestable4, FilestableArch, Users, \
     Jobparamstable, Logstable, JediJobRetryHistory, JediTasks, JediTaskparams, \
     JediEvents
@@ -747,7 +747,7 @@ def jobList(request, mode=None, param=None):
     jobs.extend(Jobswaiting4.objects.filter(**query)[:JOB_LIMIT].values())
     jobs.extend(Jobsarchived4.objects.filter(**query)[:JOB_LIMIT].values())
     jobs.extend(Jobsarchived.objects.filter(**query)[:JOB_LIMIT].values())
-    jobs.extend(jobs.objects.all().values())
+    jobs.extend(models.jobs.objects.all().values())
 
     ## If the list is for a particular JEDI task, filter out the jobs superseded by retries
     taskids = {}
