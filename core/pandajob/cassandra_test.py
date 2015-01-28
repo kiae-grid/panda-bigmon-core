@@ -13,7 +13,17 @@ class ExampleModel(Model):
     created_at = columns.DateTime()
     description = columns.Text(required=False)
 
-
-connection.setup(['144.206.234.95', '144.206.234.96'], 'panda_m_archive')
+ap = PlainTextAuthProvider(username='panda_m', password='akatsukizukuyo')
+c = connection.setup(['nosql-one.zoo.computing.kiae.ru', 'nosql-two.zoo.computing.kiae.ru'], 'panda_m_archive')
+connection.get_cluster()
 
 sync_table(ExampleModel)
+
+
+from cassandra.auth import PlainTextAuthProvider
+from cassandra.cluster import Cluster
+
+node_ips = ['nosql-one.zoo.computing.kiae.ru', 'nosql-two.zoo.computing.kiae.ru']
+ap = PlainTextAuthProvider(username='panda_m', password='akatsukizukuyo')
+c = Cluster(contact_points=node_ips, protocol_version=2, auth_provider=ap)
+s = c.connect()
