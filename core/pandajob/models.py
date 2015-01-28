@@ -208,7 +208,7 @@ class Jobswaiting4(PandaJob):
         db_table = u'jobswaiting4'
 
 
-class jobs(Model):
+class jobs_nosql(Model):
     pandaid = columns.BigInt(primary_key=True) # Field name made lowercase.
     modificationtime = columns.DateTime() # Field name made lowercase.
     jobdefinitionid = columns.BigInt() # Field name made lowercase.
