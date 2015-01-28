@@ -747,7 +747,7 @@ def jobList(request, mode=None, param=None):
     jobs.extend(Jobswaiting4.objects.filter(**query)[:JOB_LIMIT].values())
     jobs.extend(Jobsarchived4.objects.filter(**query)[:JOB_LIMIT].values())
     jobs.extend(Jobsarchived.objects.filter(**query)[:JOB_LIMIT].values())
-    jobs.extend(jobs_nosql.objects.all().values())
+    jobs.extend(jobs_nosql.objects.all())
 
     ## If the list is for a particular JEDI task, filter out the jobs superseded by retries
     taskids = {}
