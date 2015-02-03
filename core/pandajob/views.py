@@ -796,10 +796,10 @@ def jobList(request, mode=None, param=None):
     plow = 1000000
     phigh = -1000000
     for job in jobs:
-        if job['modificationtime'] > tlast:
-            tlast = job['modificationtime']
-        if job['modificationtime'] < tfirst:
-            tfirst = job['modificationtime']
+        if utc.localize(job['modificationtime']) > tlast:
+            tlast = utc.localize(job['modificationtime'])
+        if utc.localize(job['modificationtime']) < tfirst:
+            tfirst = utc.localize(job['modificationtime'])
         if job['currentpriority'] > phigh:
             phigh = job['currentpriority']
         if job['currentpriority'] < plow:
