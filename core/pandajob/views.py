@@ -795,12 +795,12 @@ def jobList(request, mode=None, param=None):
     print 'tlast=', tlast
     plow = 1000000
     phigh = -1000000
-    utc = pytz.utc
+
     for job in jobs:
-        if utc.localize(job['modificationtime']) > tlast:
-            tlast = utc.localize(job['modificationtime'])
-        if utc.localize(job['modificationtime']) < tfirst:
-            tfirst = utc.localize(job['modificationtime'])
+        if tzinfo.localize(job['modificationtime']) > tlast:
+            tlast = tzinfo.localize(job['modificationtime'])
+        if tzinfo.localize(job['modificationtime']) < tfirst:
+            tfirst = tzinfo.localize(job['modificationtime'])
         if job['currentpriority'] > phigh:
             phigh = job['currentpriority']
         if job['currentpriority'] < plow:
