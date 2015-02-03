@@ -747,7 +747,7 @@ def jobList(request, mode=None, param=None):
     jobs.extend(Jobswaiting4.objects.filter(**query)[:JOB_LIMIT].values())
     jobs.extend(Jobsarchived4.objects.filter(**query)[:JOB_LIMIT].values())
     jobs.extend(Jobsarchived.objects.filter(**query)[:JOB_LIMIT].values())
-    
+    tzinfo = pytz.utc
     from cqlengine.named import NamedTable
     jobs_nosql = NamedTable("panda_m_archive", "jobs_nosql")
     jobs.extend(jobs_nosql.objects())
@@ -788,10 +788,10 @@ def jobList(request, mode=None, param=None):
     elif '/production' in request.path:
         jobtype = 'production'
 #    tfirst = timezone.now()
-    tfirst = datetime.utcnow().replace(tzinfo=pytz.utc)
+    tfirst = datetime.utcnow().replace(tzinfo)
     print 'tfirst=', tfirst
 #    tlast = timezone.now() - timedelta(hours=2400)
-    tlast = datetime.utcnow().replace(tzinfo=pytz.utc) - timedelta(hours=2400)
+    tlast = datetime.utcnow().replace(tzinfo) - timedelta(hours=2400)
     print 'tlast=', tlast
     plow = 1000000
     phigh = -1000000
