@@ -747,13 +747,10 @@ def jobList(request, mode=None, param=None):
     jobs.extend(Jobswaiting4.objects.filter(**query)[:JOB_LIMIT].values())
     jobs.extend(Jobsarchived4.objects.filter(**query)[:JOB_LIMIT].values())
     jobs.extend(Jobsarchived.objects.filter(**query)[:JOB_LIMIT].values())
-    print "Jobsdefined"
-    print Jobsdefined4.objects.filter(**query)[:JOB_LIMIT].values()
-    print "jobs"
-    print jobs
     
-    cassandra_jobs = jobs_nosql.objects.all()
-    print cassandra_jobs
+    from cqlengine.named import NamedTable
+    panda_job_archived = NamedTable("panda_m_archive", "panda_job_archived")
+    jobs.extend(panda_jobs_archived.objects())
 
     ## If the list is for a particular JEDI task, filter out the jobs superseded by retries
     taskids = {}
