@@ -750,7 +750,7 @@ def jobList(request, mode=None, param=None):
     
     from cqlengine.named import NamedTable
     panda_job_archived = NamedTable("panda_m_archive", "panda_job_archived")
-    jobs.extend(panda_jobs_archived.objects())
+    jobs.extend(panda_job_archived.objects())
 
     ## If the list is for a particular JEDI task, filter out the jobs superseded by retries
     taskids = {}
