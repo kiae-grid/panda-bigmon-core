@@ -795,6 +795,7 @@ def jobList(request, mode=None, param=None):
     print 'tlast=', tlast
     plow = 1000000
     phigh = -1000000
+    utc = pytz.utc
     for job in jobs:
         if utc.localize(job['modificationtime']) > tlast:
             tlast = utc.localize(job['modificationtime'])
