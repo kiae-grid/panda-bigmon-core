@@ -782,10 +782,10 @@ def archivedJobList(request):
     plow = 1000000
     phigh = -1000000
     for job in jobs:
-        if job['modificationtime'] > tlast:
-            tlast = job['modificationtime']
-        if job['modificationtime'] < tfirst:
-            tfirst = job['modificationtime']
+        if job['modificationtime'].replace(tzinfo=pytz.utc) > tlast:
+            tlast = job['modificationtime'].replace(tzinfo=pytz.utc)
+        if job['modificationtime'].replace(tzinfo=pytz.utc) < tfirst:
+            tfirst = job['modificationtime'].replace(tzinfo=pytz.utc)
         if job['currentpriority'] > phigh:
             phigh = job['currentpriority']
         if job['currentpriority'] < plow:
