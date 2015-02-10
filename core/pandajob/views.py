@@ -741,7 +741,11 @@ def extensibleURL(request):
 def archivedJobList(request):
     query = setupView(request)
     jobs_nosql = NamedTable("copy_archive", "jobs")
-    return  HttpResponse(json_dumps(jobs_nosql), mimetype='text/html')
+    jobs = jobs_nosql.objects.all()
+    resp = []
+    for job in jobs:
+        resp.append({ 'pandaid': job.pandaid, 'status': job.jobstatus, 'prodsourcelabel': job.prodsourcelabel, 'produserid' : job.produserid})
+    return  HttpResponse(json_dumps(resp), mimetype='text/html')
 
 def jobList(request, mode=None, param=None):
     query = setupView(request)
