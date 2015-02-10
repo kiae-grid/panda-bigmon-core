@@ -741,11 +741,82 @@ def extensibleURL(request):
 def archivedJobList(request):
     query = setupView(request)
     jobs_nosql = NamedTable("copy_archive", "jobs")
-    jobs = jobs_nosql.objects.all()
-    resp = []
+    jobs = []
+    jobs = jobs_nosql.objects.filter(**query).limit(100)
+    taskids = {}
     for job in jobs:
-        resp.append({ 'pandaid': job.pandaid, 'status': job.jobstatus, 'prodsourcelabel': job.prodsourcelabel, 'produserid' : job.produserid})
-    return  HttpResponse(json_dumps(resp), mimetype='text/html')
+        if 'jeditaskid' in job: taskids[job['jeditaskid']] = 1
+    droplist = []
+    if len(taskids) == 1:
+        for task in taskids:
+            retryquery = {}
+            retryquery['jeditaskid'] = task
+            retries = JediJobRetryHistory.objects.filter(**retryquery).order_by('newpandaid').values()
+        newjobs = []
+        for job in jobs:
+            dropJob = 0
+            pandaid = job['pandaid']
+            for retry in retries:
+                if retry['oldpandaid'] == pandaid and retry['newpandaid'] != pandaid:
+                    ## there is a retry for this job. Drop it.
+                    print 'dropping', pandaid
+                    dropJob = retry['newpandaid']
+            if dropJob == 0:
+                newjobs.append(job)
+            else:
+                droplist.append({ 'pandaid' : pandaid, 'newpandaid' : dropJob })
+        droplist = sorted(droplist, key=lambda x:-x['pandaid'])
+        jobs = newjobs
+
+    jobs = cleanJobList(jobs)
+    njobs = len(jobs)
+    jobtype = ''
+    if 'jobtype' in request.GET:
+        jobtype = request.GET['jobtype']
+    elif '/analysis' in request.path:
+        jobtype = 'analysis'
+    elif '/production' in request.path:
+        jobtype = 'production'
+    tfirst = datetime.utcnow().replace(tzinfo=pytz.utc)
+    tlast = datetime.utcnow().replace(tzinfo=pytz.utc) - timedelta(hours=2400)
+    plow = 1000000
+    phigh = -1000000
+    for job in jobs:
+        if job['modificationtime'] > tlast:
+            tlast = job['modificationtime']
+        if job['modificationtime'] < tfirst:
+            tfirst = job['modificationtime']
+        if job['currentpriority'] > phigh:
+            phigh = job['currentpriority']
+        if job['currentpriority'] < plow:
+            plow = job['currentpriority']
+    if request.META.get('CONTENT_TYPE', 'text/plain') == 'text/plain':
+        sumd = jobSummaryDict(request, jobs)
+        xurl = extensibleURL(request)
+        data = {
+            'prefix': getPrefix(request),
+            'viewParams' : viewParams,
+            'requestParams' : request.GET,
+            'jobList': jobs,
+            'jobtype' : jobtype,
+            'njobs' : njobs,
+            'user' : None,
+            'sumd' : sumd,
+            'xurl' : xurl,
+            'droplist' : droplist,
+            'ndrops' : len(droplist),
+            'tfirst' : tfirst,
+            'tlast' : tlast,
+            'plow' : plow,
+            'phigh' : phigh,
+        }
+        data.update(getContextVariables(request))
+        return render_to_response('pandajob/jobList.html', data, RequestContext(request))
+    elif request.META.get('CONTENT_TYPE', 'text/plain') == 'application/json':
+        resp = []
+        for job in jobs:
+            resp.append({ 'pandaid': job.pandaid, 'status': job.jobstatus, 'prodsourcelabel': job.prodsourcelabel, 'produserid' : job.produserid})
+        return  HttpResponse(json_dumps(resp), mimetype='text/html')
 
 def jobList(request, mode=None, param=None):
     query = setupView(request)
