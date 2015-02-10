@@ -30,7 +30,6 @@ urlpatterns = patterns('',
     url(r'^task/', include('core.pandajob.urls_pandajob_singletask'), name='namespace_task'),
     url(r'^dash/', include('core.pandajob.urls_pandajob_dash'), name='namespace_dash'),
     url(r'^support/', include('core.pandajob.urls_pandajob_support'), name='namespace_support'),
-    url(r'^archived_jobs/', include('core.pandajob.urls_pandajob_archived_jobs'), name='namespace_jobs'),
 )
 
 
