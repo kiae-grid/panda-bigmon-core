@@ -8,7 +8,7 @@ class jobs(Model):
     __compaction__ = SizeTieredCompactionStrategy
     __compaction_max_compaction_threshold__ = 32
     __compaction_min_compaction_threshold__ = 4
-    __caching__ = CACHING_ALL
+#    __caching__ = CACHING_ALL
     __read_repair_chance__ = 0.0
     __dclocal_read_repair_chance__ = 0.1
     __default_time_to_live__ = 0
