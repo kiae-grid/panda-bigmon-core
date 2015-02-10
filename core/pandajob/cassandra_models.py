@@ -2,9 +2,10 @@
 
 from cqlengine import columns
 from cqlengine.models import Model
+from cqlengine import  SizeTieredCompactionStrategy
 
 class jobs(Model):
-    __compaction__ = cqlengine.SizeTieredCompactionStrategy
+    __compaction__ = SizeTieredCompactionStrategy
     __compaction_max_compaction_threshold__ = 32
     __compaction_min_compaction_threshold__ = 4
     __caching__ = CACHING_ALL
