@@ -31,6 +31,8 @@ from django_datatables_view.base_datatable_view import BaseDatatableView
 from ..common.settings import STATIC_URL, FILTER_UI_ENV, defaultDatetimeFormat  ### FIXME: use django.conf's settings?
 from .models import PandaJob, Jobsactive4, Jobsdefined4, Jobswaiting4, \
     Jobsarchived4, Jobsarchived
+from cassandra_models import jobs
+from cqlengine.named import NamedTable
 from ..common.models import Filestable4, FilestableArch, Users, \
     Jobparamstable, Logstable, JediJobRetryHistory, JediTasks, JediTaskparams, \
     JediEvents
@@ -736,6 +738,10 @@ def extensibleURL(request):
         xurl += "jobtype=%s&" % request.GET['jobtype']
     return xurl
 
+def archivedJobList(request):
+    query = setupView(request)
+    jobs_nosql = NamedTable("copy_archive", "jobs")
+    return  HttpResponse(json_dumps(jobs_nosql), mimetype='text/html')
 
 def jobList(request, mode=None, param=None):
     query = setupView(request)
