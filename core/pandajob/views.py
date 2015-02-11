@@ -743,7 +743,7 @@ def archivedJobList(request):
     query = setupView(request)
     jobs_nosql = NamedTable("copy_archive", "jobs")
     jobs = []
-    jobs = jobs_nosql.objects.filter(**query)
+    jobs = jobs_nosql.objects.filter(creationtime__in = query['creationtime__in'])
     taskids = {}
     for job in jobs:
         if 'jeditaskid' in job: taskids[job['jeditaskid']] = 1
