@@ -619,6 +619,7 @@ def setupView(request, opmode='', hours=0, limit=-99):
     startdate = startdate.strftime(defaultDatetimeFormat)
     enddate = datetime.utcnow().replace(tzinfo=pytz.utc).strftime(defaultDatetimeFormat)
     query = { 'modificationtime__range' : [startdate, enddate] }
+    query['creationtime__in'] = [startdate, enddate]
     ### Add any extensions to the query determined from the URL
     for vo in [ 'atlas', 'lsst' ]:
         if request.META['HTTP_HOST'].startswith(vo):
@@ -782,10 +783,10 @@ def archivedJobList(request):
     plow = 1000000
     phigh = -1000000
     for job in jobs:
-        if job['modificationtime'].replace(tzinfo=pytz.utc) > tlast:
-            tlast = job['modificationtime'].replace(tzinfo=pytz.utc)
-        if job['modificationtime'].replace(tzinfo=pytz.utc) < tfirst:
-            tfirst = job['modificationtime'].replace(tzinfo=pytz.utc)
+        if job['creationtime'].replace(tzinfo=pytz.utc) > tlast:
+            tlast = job['creationtime'].replace(tzinfo=pytz.utc)
+        if job['creationtime'].replace(tzinfo=pytz.utc) < tfirst:
+            tfirst = job['creationtime'].replace(tzinfo=pytz.utc)
         if job['currentpriority'] > phigh:
             phigh = job['currentpriority']
         if job['currentpriority'] < plow:
