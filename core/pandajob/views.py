@@ -31,8 +31,7 @@ from django_datatables_view.base_datatable_view import BaseDatatableView
 from ..common.settings import STATIC_URL, FILTER_UI_ENV, defaultDatetimeFormat  ### FIXME: use django.conf's settings?
 from .models import PandaJob, Jobsactive4, Jobsdefined4, Jobswaiting4, \
     Jobsarchived4, Jobsarchived
-from cassandra_models import jobs
-from cqlengine.named import NamedTable
+
 from ..common.models import Filestable4, FilestableArch, Users, \
     Jobparamstable, Logstable, JediJobRetryHistory, JediTasks, JediTaskparams, \
     JediEvents
@@ -64,6 +63,9 @@ from .utils import homeCloud, statelist, sitestatelist, \
     JOB_LIMIT
     # setupView, extensibleURL, userList,
 
+from cassandra_models import jobs
+from cqlengine import functions
+from cqlengine.named import NamedTable
 #from django.views.decorators.cache import cache_page
 
 #_logger = logging.getLogger(__name__)
@@ -619,7 +621,6 @@ def setupView(request, opmode='', hours=0, limit=-99):
     startdate = startdate.strftime(defaultDatetimeFormat)
     enddate = datetime.utcnow().replace(tzinfo=pytz.utc).strftime(defaultDatetimeFormat)
     query = { 'modificationtime__range' : [startdate, enddate] }
-    query['creationtime__in'] = [startdate, enddate]
     ### Add any extensions to the query determined from the URL
     for vo in [ 'atlas', 'lsst' ]:
         if request.META['HTTP_HOST'].startswith(vo):
@@ -743,7 +744,7 @@ def archivedJobList(request):
     query = setupView(request)
     jobs_nosql = NamedTable("copy_archive", "jobs")
     jobs = []
-    jobs = jobs_nosql.objects.filter(creationtime__in = query['creationtime__in'])
+    jobs = jobs_nosql.objects.filter(creationtime >= functions.MinTimeUUID(LAST_N_HOURS_MAX))
     taskids = {}
     for job in jobs:
         if 'jeditaskid' in job: taskids[job['jeditaskid']] = 1
