@@ -122,6 +122,7 @@ class day_site_errors_30m(Model):
     computingsite = columns.Text(primary_key=True)
     base_mtime = columns.DateTime(primary_key=True)
     errcode = columns.Text(primary_key=True)
+    diag = columns.Text(primary_key=True)
     count = columns.Counter()
 
 class day_index(Model):
