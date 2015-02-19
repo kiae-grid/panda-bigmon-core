@@ -123,7 +123,6 @@ class day_site_errors_30m(Model):
     base_mtime = columns.DateTime(primary_key=True)
     errcode = columns.Text(primary_key=True)
     count = columns.Counter()
-    diag = columns.Text()
 
 class day_index(Model):
     __compaction__ = SizeTieredCompactionStrategy
