@@ -8,7 +8,6 @@ class jobs(Model):
     __compaction__ = SizeTieredCompactionStrategy
     __compaction_max_compaction_threshold__ = 32
     __compaction_min_compaction_threshold__ = 4
-#    __caching__ = CACHING_ALL
     __read_repair_chance__ = 0.0
     __dclocal_read_repair_chance__ = 0.1
     __default_time_to_live__ = 0
@@ -109,3 +108,33 @@ class jobs(Model):
     jobmetrics = columns.Text()
     workqueue_id = columns.Integer()
     jeditaskid = columns.BigInt()
+
+class day_site_errors_30m(Model):
+    __compaction__ = SizeTieredCompactionStrategy
+    __compaction_max_compaction_threshold__ = 32
+    __compaction_min_compaction_threshold__ = 4
+    __read_repair_chance__ = 0.0
+    __dclocal_read_repair_chance__ = 0.1
+    __default_time_to_live__ = 0
+    __gc_grace_seconds__ = 864000
+    __memtable_flush_period_in_ms__ = 0
+    date = columns.DateTime(primary_key=True)
+    computingsite = columns.Text(primary_key=True)
+    base_mtime = columns.DateTime(primary_key=True)
+    errcode = columns.Text(primary_key=True)
+    count = columns.Counter()
+    diag = columns.Text()
+
+class day_index(Model):
+    __compaction__ = SizeTieredCompactionStrategy
+    __compaction_max_compaction_threshold__ = 32
+    __compaction_min_compaction_threshold__ = 4
+    __read_repair_chance__ = 0.0
+    __dclocal_read_repair_chance__ = 0.1
+    __default_time_to_live__ = 0
+    __gc_grace_seconds__ = 864000
+    __memtable_flush_period_in_ms__ = 0
+    date = columns.DateTime(primary_key=True)
+    modificationtime = columns.DateTime(primary_key=True)
+    pandaid = columns.Integer(primary_key=True)
+    
