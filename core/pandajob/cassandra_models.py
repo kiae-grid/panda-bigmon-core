@@ -108,6 +108,7 @@ class jobs(Model):
     jobmetrics = columns.Text()
     workqueue_id = columns.Integer()
     jeditaskid = columns.BigInt()
+    date = columns.DateTime()
 
 class day_site_errors_30m(Model):
     __compaction__ = SizeTieredCompactionStrategy
