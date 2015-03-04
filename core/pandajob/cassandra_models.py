@@ -35,7 +35,7 @@ class jobs(Model):
     creationtime = columns.DateTime()
     creationhost = columns.Text()
     currentpriority = columns.Integer()
-    date = columns.DateTime()
+    date = columns.DateTime(index=True)
     ddmerrorcode = columns.Integer()
     ddmerrordiag = columns.Text()
     destinationdblock = columns.Text()
