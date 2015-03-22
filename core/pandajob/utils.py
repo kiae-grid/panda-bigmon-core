@@ -222,7 +222,7 @@ def errorInfo(job, nchars=300):
         errtxt += 'Sup error %s: %s <br>' % (job['superrorcode'], job['superrordiag'])
     if int(job['taskbuffererrorcode']) != 0:
         errtxt += 'Task buffer error %s: %s <br>' % (job['taskbuffererrorcode'], job['taskbuffererrordiag'])
-    if job['transexitcode'] != '' and job['transexitcode'] is not None and int(job['transexitcode']) > 0:
+    if job['transexitcode'] not in ('', None, 'null') and int(job['transexitcode']) > 0:
         errtxt += 'Transformation exit code %s' % job['transexitcode']
     if len(errtxt) > nchars:
         ret = errtxt[:nchars] + '...'
