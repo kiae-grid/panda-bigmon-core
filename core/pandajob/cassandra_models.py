@@ -443,7 +443,7 @@ class day_site_errors_cnt(Model):
     err_count = columns.Counter()
     job_count = columns.Counter()
 
-    __compaction__ = LeveledCompactionStrategy
+    __compaction__ = cqlengine.LeveledCompactionStrategy
     __compaction_max_compaction_threshold__ = 32
     __compaction_min_compaction_threshold__ = 4
     __dclocal_read_repair_chance__ = 0.1
