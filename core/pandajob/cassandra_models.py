@@ -3,6 +3,7 @@
 from cqlengine import columns
 from cqlengine.models import Model
 from cqlengine import SizeTieredCompactionStrategy
+from cqlengine import LeveledCompactionStrategy
 
 """
 CQL statements for this table
@@ -443,7 +444,7 @@ class day_site_errors_cnt(Model):
     err_count = columns.Counter()
     job_count = columns.Counter()
 
-    __compaction__ = cqlengine.LeveledCompactionStrategy
+    __compaction__ = LeveledCompactionStrategy
     __compaction_max_compaction_threshold__ = 32
     __compaction_min_compaction_threshold__ = 4
     __dclocal_read_repair_chance__ = 0.1
