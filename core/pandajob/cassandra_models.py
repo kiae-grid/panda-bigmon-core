@@ -313,3 +313,53 @@ class day_site_errors_cnt(Model):
     __gc_grace_seconds__ = 864000
     __memtable_flush_period_in_ms__ = 0
     __read_repair_chance__ = 0.0
+
+
+"""
+CQL statements for this table
+=============================
+
+CREATE TABLE panda_archive.day_user_errors_cnt (
+    date timestamp,
+    interval text,
+    base_mtime timestamp,
+    produsername text,
+    errcode text,
+    diag text,
+    err_count int,
+    job_count int,
+    PRIMARY KEY ((date, interval), base_mtime, produsername, errcode, diag)
+) WITH CLUSTERING ORDER BY (base_mtime ASC, produsername ASC, errcode ASC, diag ASC)
+    AND bloom_filter_fp_chance = 0.01
+    AND caching = '{"keys":"ALL", "rows_per_partition":"NONE"}'
+    AND comment = ''
+    AND compaction = {'min_threshold': '4', 'class': 'org.apache.cassandra.db.compaction.SizeTieredCompactionStrategy', 'max_threshold': '32'}
+    AND compression = {'sstable_compression': 'org.apache.cassandra.io.compress.LZ4Compressor'}
+    AND dclocal_read_repair_chance = 0.1
+    AND default_time_to_live = 0
+    AND gc_grace_seconds = 864000
+    AND max_index_interval = 2048
+    AND memtable_flush_period_in_ms = 0
+    AND min_index_interval = 128
+    AND read_repair_chance = 0.0
+    AND speculative_retry = '99.0PERCENTILE';
+"""
+
+class day_user_errors_cnt(Model):
+    date = columns.DateTime(primary_key = True)
+    interval = columns.Text(primary_key = True)
+    base_mtime = columns.DateTime(primary_key = True)
+    produsername = columns.Text(primary_key = True)
+    errcode = columns.Integer(primary_key = True)
+    diag = columns.Text(primary_key = True)
+    err_count = columns.Counter()
+    job_count = columns.Counter()
+
+    __compaction__ = SizeTieredCompactionStrategy
+    __compaction_max_compaction_threshold__ = 32
+    __compaction_min_compaction_threshold__ = 4
+    __dclocal_read_repair_chance__ = 0.1
+    __default_time_to_live__ = 0
+    __gc_grace_seconds__ = 864000
+    __memtable_flush_period_in_ms__ = 0
+    __read_repair_chance__ = 0.0
